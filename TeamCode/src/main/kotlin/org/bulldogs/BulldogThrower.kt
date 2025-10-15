@@ -55,10 +55,10 @@ fun setupDrivetrain(gamepad: Gamepad, hardwareMap: HardwareMap, telemetry: Telem
 
     // !!! Front motors are flipped 180, and the joysticks forward motion is negative.
     //
-    frontLeftDrive.direction = DcMotorSimple.Direction.REVERSE
-    backLeftDrive.direction = DcMotorSimple.Direction.FORWARD
-    frontRightDrive.direction = DcMotorSimple.Direction.FORWARD
-    backRightDrive.direction = DcMotorSimple.Direction.REVERSE
+    frontLeftDrive.direction = DcMotorSimple.Direction.FORWARD
+    backLeftDrive.direction = DcMotorSimple.Direction.REVERSE
+    frontRightDrive.direction = DcMotorSimple.Direction.REVERSE
+    backRightDrive.direction = DcMotorSimple.Direction.FORWARD
 
     return HolonomicDrive(gamepad, Motors(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive), telemetry)
 }

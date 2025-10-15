@@ -19,7 +19,7 @@ class HolonomicDrive(val gamepad: Gamepad, val motors: Motors, val telemetry: Te
 
         // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
         // 2. Inputs
-        val axial = gamepad.left_stick_y.toDouble() // Note: pushing stick forward gives negative value
+        val axial = - gamepad.left_stick_y.toDouble() // Note: pushing stick forward gives negative value
         val lateral = gamepad.left_stick_x.toDouble()
         val yaw = gamepad.right_stick_x.toDouble()
 

@@ -53,10 +53,12 @@ fun setupDrivetrain(gamepad: Gamepad, hardwareMap: HardwareMap, telemetry: Telem
     val frontRightDrive: DcMotor = hardwareMap("front_right_drive") //1
     val backRightDrive: DcMotor = hardwareMap("back_right_drive") //3
 
+    // !!! Front motors are flipped 180, and the joysticks forward motion is negative.
+    //
     frontLeftDrive.direction = DcMotorSimple.Direction.REVERSE
-    backLeftDrive.direction = DcMotorSimple.Direction.REVERSE
+    backLeftDrive.direction = DcMotorSimple.Direction.FORWARD
     frontRightDrive.direction = DcMotorSimple.Direction.FORWARD
-    backRightDrive.direction = DcMotorSimple.Direction.FORWARD
+    backRightDrive.direction = DcMotorSimple.Direction.REVERSE
 
     return HolonomicDrive(gamepad, Motors(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive), telemetry)
 }

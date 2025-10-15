@@ -96,7 +96,7 @@ tasks.register("generateBuildConstants") {
             """package $pkg;
 public final class BuildConstants {
   private BuildConstants() {}
-  public static final String BUILD_NUMBER = \"$buildNumber\" ;
+  public static final String BUILD_NUMBER = "$buildNumber" ;
   public static final String NAME = "Ball Thrower" + BUILD_NUMBER;
 }
 """.trimIndent()

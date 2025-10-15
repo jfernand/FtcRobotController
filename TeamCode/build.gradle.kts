@@ -1,4 +1,5 @@
-import java.util.Properties
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+import java.util.*
 
 //
 // build.gradle.kts in TeamCode
@@ -21,16 +22,6 @@ plugins {
 
 android {
     namespace = "org.firstinspires.ftc.teamcode"
-
-    defaultConfig {
-        javaCompileOptions {
-            annotationProcessorOptions {
-                // Provide MY_OPMODE_GROUP to the annotation processor
-                val group = project.findProperty("shit")?.toString() ?: ""
-                arguments += mapOf("MY_OPMODE_GROUP" to group)
-            }
-        }
-    }
 
     packagingOptions {
         jniLibs {
@@ -92,6 +83,7 @@ val buildNumber: String = (project.findProperty("GIT_DESCRIBE") as String?) ?: "
 
 // Task to generate BuildConstants.java with build information
 tasks.register("generateBuildConstants") {
+    group = "versioning"
     println(buildNumber)
     val outputDir = "${projectDir}/src/main/java"
     inputs.property("GIT-DESCRIBE", buildNumber)
@@ -111,3 +103,6 @@ public final class BuildConstants {
         )
     }
 }
+
+tasks.build.dependsOn("generateBuildConstants")
+tasks.named("generateBuildConstants").dependsOn("updateVersionFromGit")

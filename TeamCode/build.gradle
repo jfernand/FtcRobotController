@@ -1,3 +1,5 @@
+import groovy.json.StringEscapeUtils
+
 //
 // build.gradle in TeamCode
 //
@@ -18,7 +20,13 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
-
+    defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [MY_OPMODE_GROUP: project.findProperty('shit') ?: ""]
+            }
+        }
+    }
     packagingOptions {
         jniLibs.useLegacyPackaging true
     }
@@ -51,7 +59,7 @@ tasks.register("updateVersionFromGit") {
     }
 }
 
-def gitDescribe = {
+def gitDescribe() {
     try {
         def p = new ProcessBuilder("git", "describe", "--tags", "--dirty", "--always")
                 .directory(rootProject.rootDir)
@@ -61,5 +69,34 @@ def gitDescribe = {
         return p.inputStream.text.trim()
     } catch (ignored) {
         return "unknown"
+    }
+}
+
+def buildNumber= (String) project.findProperty('GIT_DESCRIBE') ?: ""
+
+tasks.register('generateBuildConstants') {
+    println buildNumber
+    def outputDir = "${projectDir}/src/main/java"
+    inputs.property("GIT-DESCRIBE", buildNumber)
+    outputs.dir(outputDir)
+    doLast {
+        def pkg = "org.cr"
+        def file = file("${outputDir}/${pkg.replace('.','/')}/BuildConstants.java")
+        file.parentFile.mkdirs()
+        file.text = """package ${pkg};
+public final class BuildConstants {
+  private BuildConstants() {}
+  public static final String BUILD_NUMBER = \"${buildNumber}\" ;
+  public static final String NAME = "Ball Thrower" + BUILD_NUMBER;
+}
+"""
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${buildDir}/generated/main/java"
+        }
     }
 }

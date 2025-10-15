@@ -9,13 +9,12 @@ import kotlin.math.abs
 import kotlin.math.max
 
 interface Drivetrain {
-    fun drive()
+    fun drive(runTime: ElapsedTime)
 }
 
 class HolonomicDrive(val gamepad: Gamepad, val motors: Motors, val telemetry: Telemetry) : Drivetrain {
-    override fun drive() {
+    override fun drive(runTime: ElapsedTime) {
         // 1. Initialize
-        val runtime = ElapsedTime()
         var max: Double
 
         // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
@@ -60,11 +59,10 @@ class HolonomicDrive(val gamepad: Gamepad, val motors: Motors, val telemetry: Te
         // Once the correct motors move in the correct direction re-comment this code.
 
 
-//        frontLeftPower = if (gamepad1.x) 1.0 else 0.0;  // X gamepad
-//        backLeftPower = if (gamepad1.a) 1.0 else 0.0;  // A gamepad
-//        frontRightPower = if (gamepad1.y) 1.0 else 0.0;  // Y gamepad
-//        backRightPower = if (gamepad1.b) 1.0 else 0.0;  // B gamepad
-
+        frontLeftPower = if (gamepad.x) 1.0 else frontLeftPower;    // X gamepad
+        backLeftPower = if (gamepad.a) 1.0 else backLeftPower;      // A gamepad
+        frontRightPower = if (gamepad.y) 1.0 else frontRightPower;  // Y gamepad
+        backRightPower = if (gamepad.b) 1.0 else backRightPower     // B gamepad
 
         // Send calculated power to wheels
         motors.frontLeftDrive.power = frontLeftPower
@@ -73,9 +71,9 @@ class HolonomicDrive(val gamepad: Gamepad, val motors: Motors, val telemetry: Te
         motors.backRightDrive.power = backRightPower
 
         // Show the elapsed game time and wheel power.
-        telemetry.addData("Status", "Run Time: $runtime")
+        telemetry.addData("Status", "Run Time: $runTime")
         telemetry.addData("Front left/Right", "%4.2f, %4.2f", frontLeftPower.toFloat(), frontRightPower.toFloat())
-//        telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower)
+//        telemetry.addData("Back left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower)
         telemetry.update()
     }
 

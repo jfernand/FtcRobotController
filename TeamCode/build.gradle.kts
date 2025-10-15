@@ -53,7 +53,7 @@ dependencies {
 
 // Helper to run `git describe`
 fun gitDescribe(): String = try {
-    val p = ProcessBuilder("git", "describe", "--tags", "--dirty", "--always")
+    val p = ProcessBuilder("git", "describe", "--tags", "--always")
         .directory(rootProject.rootDir)
         .redirectErrorStream(true)
         .start()
@@ -104,5 +104,5 @@ public final class BuildConstants {
     }
 }
 
-tasks.build.dependsOn("generateBuildConstants")
+//tasks.named("compileReleaseKotlin").dependsOn("generateBuildConstants")
 tasks.named("generateBuildConstants").dependsOn("updateVersionFromGit")

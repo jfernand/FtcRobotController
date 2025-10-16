@@ -17,32 +17,37 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 //@Disabled
 class BulldogThrower : OpMode() {
     lateinit var drivetrain: Drivetrain
+    lateinit var throwerWheel: DcMotorSimple
     val runTime = ElapsedTime()
     override fun init() {
         drivetrain = setupDrivetrain(gamepad1, hardwareMap, telemetry)
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during robot configuration.
+        throwerWheel = hardwareMap.get(DcMotorSimple::class.java, "thrower_wheel")
     }
 
     override fun loop() {
         //telemetry say(hello)
         drivetrain.drive(runTime)
         // if A -> throwBall()
-        if (gamepad1.left_bumper) {
-            this.scoopBall()
-        }
+//        if (gamepad1.left_bumper) {
+//            this.scoopBall()
+//        }
 
-        if (gamepad1.right_bumper) {
-            this.throwBall()
-        }
+        handleBallThrower()
         // if B -> scoopBall()
     }
 
-    private fun throwBall() {
-        TODO("Not yet implemented")
+    private fun handleBallThrower() {
+        if (gamepad1.right_bumper) {
+            throwerWheel.power = 0.1
+        }
+        if (gamepad1.left_bumper) {
+            throwerWheel.power = 0.0
+        }
     }
 
-    private fun scoopBall() {
-        TODO("Not yet implemented")
-    }
+
 
 }
 

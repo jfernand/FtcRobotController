@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.VoltageSensor
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.cr.Motors
 import org.cr.drivetrain.Drivetrain
@@ -19,7 +20,10 @@ class BulldogThrower : OpMode() {
     lateinit var drivetrain: Drivetrain
     lateinit var throwerWheel: DcMotorSimple
     val runTime = ElapsedTime()
+    lateinit var voltageSensor : VoltageSensor
+
     override fun init() {
+        voltageSensor = hardwareMap.voltageSensor.get("Control Hub")
         drivetrain = setupDrivetrain(gamepad1, hardwareMap, telemetry)
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during robot configuration.
@@ -40,14 +44,12 @@ class BulldogThrower : OpMode() {
 
     private fun handleBallThrower() {
         if (gamepad1.right_bumper) {
-            throwerWheel.power = 0.1
+            throwerWheel.power = 1.0
         }
         if (gamepad1.left_bumper) {
             throwerWheel.power = 0.0
         }
     }
-
-
 
 }
 

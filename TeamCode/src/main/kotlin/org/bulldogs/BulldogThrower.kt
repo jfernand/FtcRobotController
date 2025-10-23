@@ -28,6 +28,7 @@ class BulldogThrower : OpMode() {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during robot configuration.
         throwerWheel = hardwareMap.get(DcMotorSimple::class.java, "thrower_wheel")
+        throwerWheel.direction = DcMotorSimple.Direction.REVERSE // The thrower motor has moved to the other side
     }
 
     override fun loop() {
@@ -45,8 +46,7 @@ class BulldogThrower : OpMode() {
     private fun handleBallThrower() {
         if (gamepad1.right_bumper) {
             throwerWheel.power = 1.0
-        }
-        if (gamepad1.left_bumper) {
+        } else if (gamepad1.left_bumper) {
             throwerWheel.power = 0.0
         }
     }

@@ -9,11 +9,11 @@ import kotlin.math.abs
 import kotlin.math.max
 
 interface Drivetrain {
-    fun drive(runTime: ElapsedTime)
+    fun loop(runTime: ElapsedTime)
 }
 
 class HolonomicDrive(val gamepad: Gamepad, val motors: Motors, val telemetry: Telemetry) : Drivetrain {
-    override fun drive(runTime: ElapsedTime) {
+    override fun loop(runTime: ElapsedTime) {
         // 1. Initialize
         var max: Double
 
@@ -74,7 +74,6 @@ class HolonomicDrive(val gamepad: Gamepad, val motors: Motors, val telemetry: Te
         telemetry.addData("Status", "Run Time: $runTime")
         telemetry.addData("Front left/Right", "%4.2f, %4.2f", frontLeftPower.toFloat(), frontRightPower.toFloat())
 //        telemetry.addData("Back left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower)
-        telemetry.update()
     }
 
 }

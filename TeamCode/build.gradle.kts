@@ -97,7 +97,9 @@ tasks.register("generateBuildConstants") {
 public final class BuildConstants {
   private BuildConstants() {}
   public static final String BUILD_NUMBER = "$buildNumber" ;
-  public static final String NAME = "Ball Thrower" + BUILD_NUMBER;
+  public static final String BRAV0 = "Brav0 - " + BUILD_NUMBER;
+  public static final String BRAV0_BASE = "Brav0 Base - " + BUILD_NUMBER;
+  public static final String BRAV0_UPPER_HALF = "Brav0 Upper - " + BUILD_NUMBER;
 }
 """.trimIndent()
         )

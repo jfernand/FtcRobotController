@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.cr.Hardware
 import org.cr.drivetrain.Drivetrain
 
-@TeleOp(name = org.cr.BuildConstants.BASE, group = "OpMode")
+@TeleOp(name = org.cr.BuildConstants.BRAV0_BASE, group = "OpMode")
 //@Disabled
 class Brav0Base : OpMode() {
     lateinit var drivetrain: Drivetrain
@@ -14,7 +14,7 @@ class Brav0Base : OpMode() {
 
     override fun init() {
         val hardware = Hardware(hardwareMap, gamepad1, gamepad2, telemetry)
-        drivetrain = setupDrivetrain(hardwareMap, gamepad1, telemetry)
+        drivetrain = hardware.setupDrivetrain()
     }
 
     override fun loop() {

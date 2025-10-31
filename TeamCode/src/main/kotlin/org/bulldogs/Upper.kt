@@ -16,14 +16,16 @@ class Upper(
 ) {
     private var intake1IsOn = false
     private var throwerIsOn = false
-    private var throwerMaxPower = 0.9
+    private var throwerMaxPower = 0.6
+    private var intake1Power = 1.0
 
     fun loop() {
+        checkAndReverseIntake1()
         if (gamepad1.dpad_up || gamepad2.dpad_up) {
-            throwerMaxPower += 0.1
+            throwerMaxPower += 0.005
         }
         if (gamepad1.dpad_down || gamepad2.dpad_down) {
-            throwerMaxPower -= 0.1
+            throwerMaxPower -= 0.005
         }
         if (gamepad1.right_bumper || gamepad2.right_bumper) {
             throwerIsOn = !throwerIsOn
@@ -34,7 +36,7 @@ class Upper(
             thrower.power = 0.0
         }
         if (intake1IsOn) {
-            intake1.power = 1.0
+            intake1.power = intake1Power
         } else {
             intake1.power = 0.0
         }
@@ -47,6 +49,15 @@ class Upper(
             intake2.power = 0.0
         }
         telemetry.addData("Thrower Max Power", throwerMaxPower)
+    }
+
+    /**
+     * Check to see if we want to reverse intake1, in case a ball is stuck.
+     */
+    private fun checkAndReverseIntake1() {
+        if (gamepad1.dpad_left || gamepad2.dpad_left) {
+            intake1Power = -intake1Power
+        }
     }
 }
 

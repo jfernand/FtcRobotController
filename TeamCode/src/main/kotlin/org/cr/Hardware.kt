@@ -4,6 +4,9 @@ import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
+/**
+ * Gather all the hardware we use into a simple container.
+ */
 data class Hardware(
     val devices: HardwareMap,
     val gamepad1: Gamepad,

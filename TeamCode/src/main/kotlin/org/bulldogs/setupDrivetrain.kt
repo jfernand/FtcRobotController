@@ -4,12 +4,14 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.cr.Hardware
 import org.cr.Motors
-import org.cr.drivetrain.Drivetrain
 import org.cr.drivetrain.HolonomicDrive
+import org.cr.drivetrain.RobotComponent
 import org.cr.invoke
 
-//fun Hardware.setupDrivetrain(devices: HardwareMap,  gamepad1: Gamepad, telemetry: Telemetry): Drivetrain {
-fun Hardware.setupDrivetrain(): Drivetrain {
+/**
+ * Gather devices from the hardware map, and build a drivetrain object.
+ */
+fun Hardware.setupDrivetrain(): RobotComponent {
 
     val frontLeftDrive: DcMotor = devices("front_left_drive") //0
     val backLeftDrive: DcMotor = devices("back_left_drive") //2

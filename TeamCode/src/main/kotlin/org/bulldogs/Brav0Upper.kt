@@ -12,11 +12,12 @@ class Brav0Upper : OpMode() {
 
     override fun init() {
         val hardware = Hardware(hardwareMap, gamepad1, gamepad2, telemetry)
-        upper = hardware.setupUpper( gamepad1, gamepad2, telemetry)
+        upper = hardware.setupUpper()
     }
 
     override fun loop() {
-        upper.loop()
+        upper.run()
+        telemetry.addData("Status", "Run Time: $runTime")
         telemetry.update()
     }
 

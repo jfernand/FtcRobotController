@@ -49,6 +49,7 @@ android {
 dependencies {
     implementation(project(":FtcRobotController"))
     // implementation("androidx.core:core-ktx:1.17.0")
+    testImplementation(kotlin("test"))
 }
 
 // Helper to run `git describe`

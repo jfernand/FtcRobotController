@@ -1,23 +1,19 @@
 package org.bulldogs
 
-import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.Gamepad
+import org.cr.CombinedGamepads
 import org.cr.Hardware
 import org.cr.drivetrain.RobotComponent
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
 class Upper(
-    val intake1: DcMotor,
-    val intake2: DcMotor,
-    val thrower: DcMotor,
-    val gamepad1: Gamepad,
-    val gamepad2: Gamepad,
+    val hardware: Brav0Hardware,
     val telemetry: Telemetry,
 ) : RobotComponent {
     private var intake1IsOn = false
     private var throwerIsOn = false
-    private var throwerMaxPower = 0.6
+    private var throwerMaxPower = 0.6 // Maximum thrower wheel speed.
     private var intake1Power = 1.0
 
     /**
@@ -28,45 +24,42 @@ class Upper(
      */
     override fun run() {
         adjustThrowerPower()
-
         checkAndReverseIntake1()
-
         throwerOnOff()
-
         intake1OnOff()
-
         intake2OnOff()
-
         telemetry.addData("Thrower Max Power", throwerMaxPower)
     }
 
     private fun intake2OnOff() {
-        if (gamepad1.right_trigger > 0.5 || gamepad2.right_trigger > 0.5) {
-            intake2.power = 1.0
+        if (hardware.rightTrigger > 0.5) {
+            hardware.intake2.power = 1.0
         } else {
-            intake2.power = 0.0
+            hardware.intake2.power = 0.0
         }
     }
 
+    /** Tells the controller whether the intake1 motor is on or off, and if on, at what level
+     */
     private fun intake1OnOff() {
-        if (gamepad1.left_bumper || gamepad2.left_bumper) {
+        if (hardware.leftBumper.wasPressed()) {
             intake1IsOn = !intake1IsOn
         }
         if (intake1IsOn) {
-            intake1.power = intake1Power
+            hardware.intake1.power = intake1Power
         } else {
-            intake1.power = 0.0
+            hardware.intake1.power = 0.0
         }
     }
 
     private fun throwerOnOff() {
-        if (gamepad1.right_bumper || gamepad2.right_bumper) {
+        if (hardware.rightBumper.wasPressed()) {
             throwerIsOn = !throwerIsOn
         }
         if (throwerIsOn) {
-            thrower.power = throwerMaxPower
+            hardware.thrower.power = throwerMaxPower
         } else {
-            thrower.power = 0.0
+            hardware.thrower.power = 0.0
         }
     }
 
@@ -74,7 +67,7 @@ class Upper(
      * Check to see if we want to reverse intake1, in case a ball is stuck.
      */
     private fun checkAndReverseIntake1() {
-        if (gamepad1.dpad_left || gamepad2.dpad_left) {
+        if (hardware.dpadLeft.wasPressed()) {
             intake1Power = -intake1Power
         }
     }
@@ -84,11 +77,11 @@ class Upper(
      * We should do edge detection, as the code is sensing the dpad presses multiple times.
      */
     private fun adjustThrowerPower() {
-        if (gamepad1.dpad_up || gamepad2.dpad_up) {
-            throwerMaxPower += 0.005
+        if (hardware.dpadUp.wasPressed()) {
+            throwerMaxPower += 0.01
         }
-        if (gamepad1.dpad_down || gamepad2.dpad_down) {
-            throwerMaxPower -= 0.005
+        if (hardware.dpadDown.wasPressed()) {
+            throwerMaxPower -= 0.01
         }
 
         // Clamp the thrower power.
@@ -98,13 +91,15 @@ class Upper(
 }
 
 /**
- * Gather devices from the hardware map, and build an Upper object.
+ * Gather devices from the hardware map and build an Upper object.
  */
 fun Hardware.setupUpper(): Upper {
-    val intake1 = devices.get(DcMotor::class.java, "intake_1")
-    val intake2 = devices.get(DcMotor::class.java, "intake_2")
-    val thrower = devices.get(DcMotor::class.java, "thrower")
+    val intake1 = devices.get(DcMotorEx::class.java, "intake_1")
+    val intake2 = devices.get(DcMotorEx::class.java, "intake_2")
+    val thrower = devices.get(DcMotorEx::class.java, "thrower")
     intake1.direction = DcMotorSimple.Direction.REVERSE
     intake2.direction = DcMotorSimple.Direction.REVERSE
-    return Upper(intake1, intake2, thrower, gamepad1, gamepad2, telemetry)
+    return Upper(
+        Brav0Hardware(intake1, intake2, thrower, CombinedGamepads(gamepad1, gamepad2)), telemetry
+    )
 }

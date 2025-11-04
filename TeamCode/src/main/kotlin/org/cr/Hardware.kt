@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
 /**
- * Gather all the hardware we use into a simple container.
+ * Gather all the hardware generically available for use into a simple container.
  */
 data class Hardware(
     val devices: HardwareMap,

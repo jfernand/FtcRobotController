@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.cr.Hardware
 
-@TeleOp(name = org.cr.BuildConstants.UPPER_HALF, group = "OpMode")
+@TeleOp(name = org.cr.BuildConstants.BRAV0_UPPER_HALF, group = "OpMode")
 class Brav0Upper : OpMode() {
     private lateinit var upper: Upper
     val runTime = ElapsedTime()

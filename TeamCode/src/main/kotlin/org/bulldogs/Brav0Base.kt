@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.cr.Hardware
 import org.cr.drivetrain.RobotComponent
 
-@TeleOp(name = org.cr.BuildConstants.BASE, group = "OpMode")
+@TeleOp(name = org.cr.BuildConstants.BRAV0_BASE, group = "OpMode")
 //@Disabled
 class Brav0Base : OpMode() {
     lateinit var drivetrain: RobotComponent

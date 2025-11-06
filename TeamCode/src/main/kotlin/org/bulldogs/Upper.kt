@@ -6,6 +6,7 @@ import org.cr.CombinedGamepads
 import org.cr.Hardware
 import org.cr.drivetrain.RobotComponent
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 
 class Upper(
     val hardware: Brav0Hardware,
@@ -23,14 +24,20 @@ class Upper(
      *  - Turn on or off the thrower wheel with right bumper and intake2 with right trigger.
      */
     override fun run() {
+        checkKeys()
         adjustThrowerPower()
         checkAndReverseIntake1()
         throwerOnOff()
         intake1OnOff()
         intake2OnOff()
+        telemetry.addData("Thrower RPM", hardware.thrower.getVelocity(AngleUnit.DEGREES )/60)
+        telemetry.addData("Intake1", intake1Power)
         telemetry.addData("Thrower Max Power", throwerMaxPower)
     }
 
+    private fun checkKeys() {
+
+    }
     private fun intake2OnOff() {
         if (hardware.rightTrigger > 0.5) {
             hardware.intake2.power = 1.0
@@ -100,6 +107,6 @@ fun Hardware.setupUpper(): Upper {
     intake1.direction = DcMotorSimple.Direction.REVERSE
     intake2.direction = DcMotorSimple.Direction.REVERSE
     return Upper(
-        Brav0Hardware(intake1, intake2, thrower, CombinedGamepads(gamepad1, gamepad2)), telemetry
-    )
+        Brav0Hardware(intake1, intake2, thrower, CombinedGamepads(gamepad1, gamepad2), telemetry), telemetry
+    ) // TODO remove telemetry
 }

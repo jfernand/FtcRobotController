@@ -14,11 +14,13 @@ class PressableKeyTests {
         key.check()
         assertTrue(key.wasPressed(), "Press when released")
         assertFalse(key.wasPressed(), "No press after check")
+        key.check() // Test that we do not run out of presses.
     }
 }
 
 data class SimulatePress(var presses: List<Boolean>) : () -> Boolean {
     override fun invoke(): Boolean {
+        if (presses.isEmpty()) return false
         val pressed = presses.first()
         presses = presses.drop(1)
         return pressed

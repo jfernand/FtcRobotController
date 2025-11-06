@@ -36,7 +36,7 @@ class Upper(
     }
 
     private fun checkKeys() {
-
+        hardware.checkKeys()
     }
     private fun intake2OnOff() {
         if (hardware.rightTrigger > 0.5) {

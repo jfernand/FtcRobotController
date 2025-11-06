@@ -27,6 +27,7 @@ class Upper(
         checkKeys()
         adjustThrowerPower()
         checkAndReverseIntake1()
+
         throwerOnOff()
         intake1OnOff()
         intake2OnOff()
@@ -38,6 +39,33 @@ class Upper(
     private fun checkKeys() {
         hardware.checkKeys()
     }
+
+    /**
+     * Adjust the speed of the thrower wheel based on the up and down dpad buttons.
+     * We should do edge detection, as the code is sensing the dpad presses multiple times.
+     */
+    private fun adjustThrowerPower() {
+        if (hardware.dpadUp.buttonWasClicked()) {
+            throwerMaxPower += 0.01
+        }
+        if (hardware.dpadDown.buttonWasClicked()) {
+            throwerMaxPower -= 0.01
+        }
+
+        // Clamp the thrower power.
+        if (throwerMaxPower < -1.0) throwerMaxPower = -1.00
+        if (throwerMaxPower > 1.0) throwerMaxPower = 1.0
+    }
+
+    /**
+     * Check to see if we want to reverse intake1, in case a ball is stuck.
+     */
+    private fun checkAndReverseIntake1() {
+        if (hardware.dpadLeft.buttonWasClicked()) {
+            intake1Power = -intake1Power
+        }
+    }
+
     private fun intake2OnOff() {
         if (hardware.rightTrigger > 0.5) {
             hardware.intake2.power = 1.0
@@ -49,7 +77,7 @@ class Upper(
     /** Tells the controller whether the intake1 motor is on or off, and if on, at what level
      */
     private fun intake1OnOff() {
-        if (hardware.leftBumper.wasPressed()) {
+        if (hardware.leftBumper.buttonWasClicked()) {
             intake1IsOn = !intake1IsOn
         }
         if (intake1IsOn) {
@@ -60,7 +88,7 @@ class Upper(
     }
 
     private fun throwerOnOff() {
-        if (hardware.rightBumper.wasPressed()) {
+        if (hardware.rightBumper.buttonWasClicked()) {
             throwerIsOn = !throwerIsOn
         }
         if (throwerIsOn) {
@@ -68,32 +96,6 @@ class Upper(
         } else {
             hardware.thrower.power = 0.0
         }
-    }
-
-    /**
-     * Check to see if we want to reverse intake1, in case a ball is stuck.
-     */
-    private fun checkAndReverseIntake1() {
-        if (hardware.dpadLeft.wasPressed()) {
-            intake1Power = -intake1Power
-        }
-    }
-
-    /**
-     * Adjust the speed of the thrower wheel based on the up and down dpad buttons.
-     * We should do edge detection, as the code is sensing the dpad presses multiple times.
-     */
-    private fun adjustThrowerPower() {
-        if (hardware.dpadUp.wasPressed()) {
-            throwerMaxPower += 0.01
-        }
-        if (hardware.dpadDown.wasPressed()) {
-            throwerMaxPower -= 0.01
-        }
-
-        // Clamp the thrower power.
-        if (throwerMaxPower < -1.0) throwerMaxPower = -1.00
-        if (throwerMaxPower > 1.0) throwerMaxPower = 1.0
     }
 }
 

@@ -1,0 +1,15 @@
+digraph G {
+    start    [label = "Start", color=blue, fontname="AvantGarde-Book-20", fontsize=14];
+    pressed  [label = "Pressed", fontname="courier-20", fontsize=14];
+    released [label = "Released", fontname="courier-20", fontsize=14];
+
+    start -> pressed [label = "key\npressed", fontname="monospace-8", fontsize=10];
+    start -> start:w   [label = "no\nkey pressed", fontname="monospace-8", fontsize=10]
+
+    pressed -> pressed  [label = "key\npressed", fontname="monospace-8", fontsize=10]
+    pressed -> released [label = "no\nkey pressed", fontname="monospace-8", fontsize=10]
+
+    released -> released:w [label = "no\nkeypressed", fontname="monospace-8", fontsize=10]
+    released -> start    [label = "buttonWasClicked()", fontname="monospace-8", fontsize=10]
+    released -> released:e [label = "key\npressed", fontname="monospace-8", fontsize=10]
+}

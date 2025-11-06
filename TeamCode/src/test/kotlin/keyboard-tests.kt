@@ -8,12 +8,12 @@ class PressableKeyTests {
     fun testPressableKey() {
         val sequence = SimulatePress(listOf(true, false))
         val key = PressableKey(sequence)
-        assertTrue(!key.wasPressed(), "No press if no check")
+        assertFalse(key.buttonWasClicked(), "No press if no check")
         key.check()
-        assertFalse(key.wasPressed(), "No press when first depressed")
+        assertFalse(key.buttonWasClicked(), "No press when first depressed")
         key.check()
-        assertTrue(key.wasPressed(), "Press when released")
-        assertFalse(key.wasPressed(), "No press after check")
+        assertTrue(key.buttonWasClicked(), "Press when released")
+        assertFalse(key.buttonWasClicked(), "No press after check")
         key.check() // Test that we do not run out of presses.
     }
 }

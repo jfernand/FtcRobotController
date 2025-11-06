@@ -31,7 +31,10 @@ class Upper(
         throwerOnOff()
         intake1OnOff()
         intake2OnOff()
-        telemetry.addData("Thrower RPM", hardware.thrower.getVelocity(AngleUnit.DEGREES )/60)
+        telemetry.addData(
+            "Thrower RPM",
+            hardware.thrower.getVelocity(AngleUnit.DEGREES)
+        )
         telemetry.addData("Intake1", intake1Power)
         telemetry.addData("Thrower Max Power", throwerMaxPower)
     }
